@@ -1,0 +1,10 @@
+#!/bin/sh 
+
+echo "Creating the project folder : $1"
+mkdir $1
+echo "Creating the src sub-directory"
+mkdir $1/src
+echo "Generating default main.cpp"
+echo "#include <iostream>\n\nint main(int argc, char *argv[])\n{\n\tstd::cout << \"Helloworld !\" << std::endl;\n\treturn 0;\n}\n" > $1/src/main.cpp
+echo "Generating makefile"
+echo "CC=g++\nCFLAGS=-Wall -pedantic\n\nbuild: bin obj bin/$1\n\nrebuild: clean build\n\nobj:\n\tmkdir obj\n\nbin:\n\tmkdir bin\n\nbin/$1: obj/main.o\n\t\$(CC) obj/*.o -o bin/$1 \$(CFLAGS)\n\nobj/main.o: src/main.cpp\n\t\$(CC) -c src/main.cpp -o obj/main.o \$(CFLAGS)\n\nclean:\n\trm -fr obj\n\trm -fr bin" > $1/makefile
